@@ -250,18 +250,32 @@
     },{threshold:0.2});
     document.querySelectorAll('section, .work-card, .team-card').forEach(el=>observer.observe(el));
 
-        document.querySelectorAll('nav a').forEach(anchor=>{
+    /* Плавный скролл */
+    document.querySelectorAll('nav a').forEach(anchor=>{
       anchor.addEventListener('click',function(e){
         e.preventDefault();
         const target=document.querySelector(this.getAttribute('href'));
         const targetPos=target.offsetTop-60;
-        smoothScrollTo(window.scrollY,targetPos,2000);
+        smoothScrollTo(window.scrollY,targetPos,800);
       });
     });
+
+    function smoothScrollTo(start, end, duration){
+      const startTime=performance.now();
+      function scroll(){
+        const now=performance.now();
+        const time=(now-startTime)/duration;
+        const progress=Math.min(time,1);
+        window.scrollTo(0,start+(end-start)*progress);
+        if(progress<1) requestAnimationFrame(scroll);
+      }
+      scroll();
+    }
 
     /* Год */
     document.getElementById('year').textContent=new Date().getFullYear();
   </script>
 </body>
 </html>
+
 
