@@ -141,27 +141,26 @@
       <p>Мы — команда программистов-хакеров <strong>1xCode</strong>, объединённых идеей создавать мощные цифровые решения и изучать безопасность систем.</p>
     </section>
 
-<section id="works">
-  <h2>Наши проекты</h2>
-  <div class="works">
-    <div class="work-card">
-      <img src="images/telegram.png" alt="Telegram боты" style="width:80px;height:80px;margin-bottom:12px;">
-      <h3>Telegram-боты</h3>
-      <p>Создаём умных ботов для бизнеса, автоматизации и развлечений.</p>
-    </div>
-    <div class="work-card">
-      <img src="images/android.png" alt="Android приложения" style="width:80px;height:80px;margin-bottom:12px;">
-      <h3>Мобильные приложения</h3>
-      <p>Разработка под Android с современным UI и высокой производительностью.</p>
-    </div>
-    <div class="work-card">
-      <img src="images/windows.png" alt="Windows приложения" style="width:80px;height:80px;margin-bottom:12px;">
-      <h3>EXE приложения</h3>
-      <p>Десктоп-софт для Windows: от утилит до сложных системных решений.</p>
-    </div>
-  </div>
-</section>
-
+    <section id="works">
+      <h2>Наши проекты</h2>
+      <div class="works">
+        <div class="work-card">
+          <div class="icon"><i class="fab fa-telegram-plane"></i></div>
+          <h3>Telegram-боты</h3>
+          <p>Создаём умных ботов для бизнеса, автоматизации и развлечений.</p>
+        </div>
+        <div class="work-card">
+          <div class="icon"><i class="fab fa-android"></i></div>
+          <h3>Мобильные приложения</h3>
+          <p>Разработка под Android с современным UI и высокой производительностью.</p>
+        </div>
+        <div class="work-card">
+          <div class="icon"><i class="fab fa-windows"></i></div>
+          <h3>EXE приложения</h3>
+          <p>Десктоп-софт для Windows: от утилит до сложных системных решений.</p>
+        </div>
+      </div>
+    </section>
 
     <section id="team">
       <h2>Наша команда</h2>
@@ -176,6 +175,12 @@
           <h3>Хлебушек</h3>
           <p>Главный-дизайнер</p>
         </div>
+        <div class="team-card">
+          <img src="images/okey.jpg" alt="Okey">
+          <h3>Okey</h3>
+          <p>Главный-тестер</p>
+        </div>
+      </div>
     </section>
 
     <section id="contact">
@@ -232,35 +237,8 @@
     },{threshold:0.2});
     document.querySelectorAll('section, .work-card, .team-card').forEach(el=>observer.observe(el));
 
-    <script>
-  function smoothScrollTo(start, end, duration) {
-    const distance = end - start;
-    let startTime = null;
-
-    function animation(currentTime) {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      window.scrollTo(0, start + distance * progress);
-      if (progress < 1) requestAnimationFrame(animation);
-    }
-    requestAnimationFrame(animation);
-  }
-
-  document.querySelectorAll('nav a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      const targetPos = target.offsetTop - 60; // учитываем шапку
-      smoothScrollTo(window.scrollY, targetPos, 3000); // 1200мс — регулируй скорость
-    });
-  });
-</script>
-
-
     /* Год */
     document.getElementById('year').textContent=new Date().getFullYear();
   </script>
 </body>
 </html>
-
