@@ -11,6 +11,7 @@
       color:#0ff;
       overflow-x:hidden;
       scroll-behavior:smooth;
+      background:#000;
     }
 
     /* Матрица фон */
@@ -26,14 +27,14 @@
     header {
       position:fixed;
       top:0;left:0;width:100%;
-      background:#000;
+      background:#000; /* не прозрачная */
       display:flex;justify-content:space-between;align-items:center;
       padding:16px 40px;z-index:10;
       border-bottom:1px solid rgba(0,255,200,0.3);
     }
     header img.logo {
       height:40px;
-      filter:drop-shadow(0 0 8px #00f0ff);
+      /* убрал свечение */
     }
     nav a {
       margin-left:24px;
@@ -90,9 +91,13 @@
     .icon {
       font-size:60px;
       color:#00e0ff;
-      text-shadow:0 0 15px #00e0ff, 0 0 30px #00f;
       margin-bottom:12px;
       display:inline-block;
+      transition: transform .3s ease, text-shadow .3s ease;
+    }
+    .work-card:hover .icon {
+      transform:scale(1.2) rotate(5deg);
+      text-shadow:0 0 25px #0ff, 0 0 40px #0ff;
     }
 
     /* Фото в команде */
@@ -140,17 +145,17 @@
       <h2>Наши проекты</h2>
       <div class="works">
         <div class="work-card">
-          <div class="icon"><i class="fas fa-robot"></i></div>
+          <div class="icon"><i class="fab fa-telegram-plane"></i></div>
           <h3>Telegram-боты</h3>
           <p>Создаём умных ботов для бизнеса, автоматизации и развлечений.</p>
         </div>
         <div class="work-card">
-          <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+          <div class="icon"><i class="fab fa-android"></i></div>
           <h3>Мобильные приложения</h3>
           <p>Разработка под Android с современным UI и высокой производительностью.</p>
         </div>
         <div class="work-card">
-          <div class="icon"><i class="fas fa-desktop"></i></div>
+          <div class="icon"><i class="fab fa-windows"></i></div>
           <h3>EXE приложения</h3>
           <p>Десктоп-софт для Windows: от утилит до сложных системных решений.</p>
         </div>
