@@ -10,7 +10,7 @@
       font-family:Consolas, monospace;
       color:#0ff;
       overflow-x:hidden;
-      scroll-behavior:smooth;
+      scroll-behavior:smooth; /* плавный скролл */
     }
 
     /* Матрица фон */
@@ -31,7 +31,11 @@
       padding:16px 40px;z-index:10;
       border-bottom:1px solid rgba(0,255,200,0.3);
     }
-    header h1 {color:#00f0ff;font-size:20px}
+    header .logo {
+      height:40px;
+      width:auto;
+      cursor:pointer;
+    }
     nav a {
       margin-left:24px;
       text-decoration:none;
@@ -101,46 +105,13 @@
       border-top:1px solid rgba(0,255,255,0.3);
       margin-top:80px;
     }
-
-    /* 📱 Адаптация для телефона */
-    @media (max-width: 768px) {
-      header {
-        flex-direction:column;
-        padding:10px 20px;
-      }
-      nav {
-        margin-top:8px;
-      }
-      nav a {
-        margin:0 12px;
-        font-size:14px;
-      }
-      section {
-        margin:80px 16px;
-        padding:20px;
-      }
-      .works,
-      .team {
-        grid-template-columns:1fr; /* одна колонка */
-      }
-      .team-card img {
-        width:80px;height:80px;
-      }
-      section h2 {
-        font-size:18px;
-      }
-      .work-card h3,
-      .team-card h3 {
-        font-size:16px;
-      }
-    }
   </style>
 </head>
 <body>
   <canvas id="matrixCanvas"></canvas>
 
   <header>
-    <h1>1xCode</h1>
+    <img src="images/logo.png" alt="1xCode Logo" class="logo">
     <nav>
       <a href="#about">О нас</a>
       <a href="#works">Проекты</a>
@@ -159,15 +130,15 @@
       <h2>Наши проекты</h2>
       <div class="works">
         <div class="work-card">
-          <h3>Telegram-боты</h3>
+          <h3>🤖 Telegram-боты</h3>
           <p>Создаём умных ботов для бизнеса, автоматизации и развлечений.</p>
         </div>
         <div class="work-card">
-          <h3>Мобильные приложения</h3>
+          <h3>📱 Мобильные приложения</h3>
           <p>Разработка под Android с современным UI и высокой производительностью.</p>
         </div>
         <div class="work-card">
-          <h3>EXE приложения</h3>
+          <h3>💻 EXE приложения</h3>
           <p>Десктоп-софт для Windows: от утилит до сложных системных решений.</p>
         </div>
       </div>
@@ -186,6 +157,7 @@
           <h3>Хлебушек</h3>
           <p>Главный-дизайнер</p>
         </div>
+      </div>
     </section>
 
     <section id="contact">
@@ -201,42 +173,36 @@
 
   <script>
     /* Матрица */
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-
-    let letters = '01';
-    let fontSize = 16;
-    let columns;
-    let drops;
-
-    function initMatrix() {
-      canvas.height = window.innerHeight;
-      canvas.width = window.innerWidth;
-      columns = Math.floor(canvas.width / fontSize);
-      drops = Array(columns).fill(1);
+    const canvas=document.getElementById('matrixCanvas');
+    const ctx=canvas.getContext('2d');
+    function resizeCanvas(){
+      canvas.height=window.innerHeight;
+      canvas.width=window.innerWidth;
     }
+    resizeCanvas();
+    const letters='01';
+    const fontSize=16;
+    let columns=Math.floor(canvas.width/fontSize);
+    let drops=new Array(columns).fill(1);
 
-    function draw() {
-      ctx.fillStyle = 'rgba(0,0,0,0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#00e0ff';
-      ctx.font = fontSize + 'px monospace';
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters.charAt(Math.floor(Math.random() * letters.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
+    function draw(){
+      ctx.fillStyle='rgba(0,0,0,0.1)';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle='#00e0ff';
+      ctx.font=fontSize+'px monospace';
+      for(let i=0;i<drops.length;i++){
+        const text=letters.charAt(Math.floor(Math.random()*letters.length));
+        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+        if(drops[i]*fontSize>canvas.height&&Math.random()>0.975){drops[i]=0;}
         drops[i]++;
       }
     }
-
-    initMatrix();
-    setInterval(draw, 40);
-    window.addEventListener('resize', initMatrix);
+    setInterval(draw,40);
+    window.addEventListener('resize',()=>{
+      resizeCanvas();
+      columns=Math.floor(canvas.width/fontSize);
+      drops=new Array(columns).fill(1);
+    });
 
     /* Появление/исчезновение секций и карточек */
     const observer=new IntersectionObserver(entries=>{
@@ -250,32 +216,18 @@
     },{threshold:0.2});
     document.querySelectorAll('section, .work-card, .team-card').forEach(el=>observer.observe(el));
 
-    /* Плавный скролл */
+    /* Плавный скролл с контролем скорости */
     document.querySelectorAll('nav a').forEach(anchor=>{
       anchor.addEventListener('click',function(e){
         e.preventDefault();
         const target=document.querySelector(this.getAttribute('href'));
-        const targetPos=target.offsetTop-60;
-        smoothScrollTo(window.scrollY,targetPos,800);
+        const targetPos=target.offsetTop-60; // смещение с учётом шапки
+        window.scrollTo({top:targetPos,behavior:"smooth"});
       });
     });
-
-    function smoothScrollTo(start, end, duration){
-      const startTime=performance.now();
-      function scroll(){
-        const now=performance.now();
-        const time=(now-startTime)/duration;
-        const progress=Math.min(time,1);
-        window.scrollTo(0,start+(end-start)*progress);
-        if(progress<1) requestAnimationFrame(scroll);
-      }
-      scroll();
-    }
 
     /* Год */
     document.getElementById('year').textContent=new Date().getFullYear();
   </script>
 </body>
 </html>
-
-
