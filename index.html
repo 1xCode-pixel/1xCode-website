@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1xCode — Команда программистов</title>
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box}
+    body {
+      font-family:Consolas, monospace;
+      color:#0ff;
+      overflow-x:hidden;
+      scroll-behavior:smooth;
+    }
+
+    /* Матрица фон */
+    #matrixCanvas {
+      position:fixed;
+      top:0;left:0;
+      width:100%;height:100%;
+      background:#000;
+      z-index:-1;
+    }
+
+    /* Навигация */
+    header {
+      position:fixed;
+      top:0;left:0;width:100%;
+      background:rgba(0,0,0,0.9);
+      display:flex;justify-content:space-between;align-items:center;
+      padding:16px 40px;z-index:10;
+      border-bottom:1px solid rgba(0,255,200,0.3);
+    }
+    header h1 {color:#00f0ff;font-size:20px}
+    nav a {
+      margin-left:24px;
+      text-decoration:none;
+      color:#00f0ff;
+      font-weight:500;
+      transition:color .3s;
+    }
+    nav a:hover {color:#fff}
+
+    /* Секции */
+    section {
+      max-width:900px;
+      margin:120px auto;
+      padding:32px;
+      border-radius:12px;
+      background:transparent;
+      transition:opacity .8s, transform .8s;
+      opacity:0;transform:translateY(40px);
+      border-left:3px solid rgba(0,200,255,0.5);
+    }
+    section.visible {opacity:1;transform:translateY(0)}
+    section h2 {margin-bottom:12px;color:#00e0ff}
+
+    /* Карточки */
+    .works,
+    .team {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:20px;
+    }
+    .work-card,
+    .team-card {
+      padding:20px;border-radius:10px;
+      background:rgba(0,0,0,0.7);
+      border:1px solid rgba(0,255,255,0.3);
+      transition:opacity .6s, transform .6s, box-shadow .4s;
+      opacity:0;transform:translateY(40px);
+      text-align:center;
+    }
+    .work-card.visible,
+    .team-card.visible {
+      opacity:1;transform:translateY(0);
+    }
+    .work-card:hover,
+    .team-card:hover {
+      transform:translateY(-6px);
+      box-shadow:0 0 18px rgba(0,200,255,0.6);
+    }
+    .work-card h3,
+    .team-card h3 {color:#0ff;margin-bottom:8px}
+
+    /* Фото в команде */
+    .team-card img {
+      width:100px;height:100px;
+      border-radius:50%;
+      margin-bottom:12px;
+      border:2px solid #0ff;
+      object-fit:cover;
+      box-shadow:0 0 15px rgba(0,255,255,0.5);
+    }
+
+    footer {
+      text-align:center;
+      padding:20px;
+      font-size:14px;
+      color:#00e0ff;
+      border-top:1px solid rgba(0,255,255,0.3);
+      margin-top:80px;
+    }
+
+    /* 📱 Адаптация для телефона */
+    @media (max-width: 768px) {
+      header {
+        flex-direction:column;
+        padding:10px 20px;
+      }
+      nav {
+        margin-top:8px;
+      }
+      nav a {
+        margin:0 12px;
+        font-size:14px;
+      }
+      section {
+        margin:80px 16px;
+        padding:20px;
+      }
+      .works,
+      .team {
+        grid-template-columns:1fr; /* одна колонка */
+      }
+      .team-card img {
+        width:80px;height:80px;
+      }
+      section h2 {
+        font-size:18px;
+      }
+      .work-card h3,
+      .team-card h3 {
+        font-size:16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrixCanvas"></canvas>
+
+  <header>
+    <h1>1xCode</h1>
+    <nav>
+      <a href="#about">О нас</a>
+      <a href="#works">Проекты</a>
+      <a href="#team">Команда</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="about">
+      <h2>О нас</h2>
+      <p>Мы — команда программистов-хакеров <strong>1xCode</strong>, объединённых идеей создавать мощные цифровые решения и изучать безопасность систем.</p>
+    </section>
+
+    <section id="works">
+      <h2>Наши проекты</h2>
+      <div class="works">
+        <div class="work-card">
+          <h3>Telegram-боты</h3>
+          <p>Создаём умных ботов для бизнеса, автоматизации и развлечений.</p>
+        </div>
+        <div class="work-card">
+          <h3>Мобильные приложения</h3>
+          <p>Разработка под Android с современным UI и высокой производительностью.</p>
+        </div>
+        <div class="work-card">
+          <h3>EXE приложения</h3>
+          <p>Десктоп-софт для Windows: от утилит до сложных системных решений.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="team">
+      <h2>Наша команда</h2>
+      <div class="team">
+        <div class="team-card">
+          <img src="images/dill.jpg" alt="Dill">
+          <h3>Dill</h3>
+          <p>Главный-кодер</p>
+        </div>
+        <div class="team-card">
+          <img src="images/hleb.jpg" alt="Хлебушек">
+          <h3>Хлебушек</h3>
+          <p>Главный-дизайнер</p>
+        </div>
+    </section>
+
+    <section id="contact">
+      <h2>Контакты</h2>
+      <p>Email: 1xcodeteam@gmail.com</p>
+      <p>Город: Магнитогорск</p>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> 1xCode — сила в коде
+  </footer>
+
+  <script>
+    /* Матрица */
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let letters = '01';
+    let fontSize = 16;
+    let columns;
+    let drops;
+
+    function initMatrix() {
+      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+      columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(1);
+    }
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0,0,0,0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#00e0ff';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    initMatrix();
+    setInterval(draw, 40);
+    window.addEventListener('resize', initMatrix);
+
+    /* Появление/исчезновение секций и карточек */
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+        } else {
+          entry.target.classList.remove('visible');
+        }
+      });
+    },{threshold:0.2});
+    document.querySelectorAll('section, .work-card, .team-card').forEach(el=>observer.observe(el));
+
+    /* Год */
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
