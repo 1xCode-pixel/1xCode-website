@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
@@ -6,25 +6,27 @@
   <title>1xCode — Команда программистов</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Consolas, monospace, monospace;background:#000;color:#0ff;overflow-x:hidden}
+    body{font-family:Consolas, monaco, monospace;background:#000;color:#0ff;overflow-x:hidden}
     /* canvas - матрица */
     #matrixCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block}
 
     /* header */
-    header{position:fixed;left:0;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 32px;background:#000;z-index:10;border-bottom:1px solid rgba(0,255,200,0.06)}
+    header{position:fixed;left:0;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 32px;background:#000;z-index:20;border-bottom:1px solid rgba(0,255,200,0.06)}
     .logo{height:64px}
     nav a{color:#00e0ff;text-decoration:none;margin-left:18px;font-weight:600;transition:color .18s}
     nav a:hover{color:#fff}
 
-    main{max-width:1100px;margin:110px auto;padding:20px}
+    main{max-width:1100px;margin:110px auto;padding:20px;position:relative;z-index:2}
 
-    section{margin:28px 0;padding:26px;border-radius:12px;background:transparent;transition:opacity .7s,transform .7s;opacity:0;transform:translateY(30px);border-left:3px solid rgba(0,200,255,0.06)}
+    section{margin:28px 0;padding:26px;border-radius:12px;background:transparent;transition:opacity .6s,transform .6s;opacity:0;transform:translateY(30px);border-left:3px solid rgba(0,200,255,0.06)}
     section.visible{opacity:1;transform:translateY(0)}
     h2{color:#00e0ff;margin-bottom:12px}
 
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
 
-    .card{background:rgba(0,0,0,0.6);padding:18px;border-radius:10px;border:1px solid rgba(0,255,255,0.06);text-align:center;transition:transform .25s,box-shadow .25s}
+    .card{background:rgba(0,0,0,0.6);padding:18px;border-radius:10px;border:1px solid rgba(0,255,255,0.06);text-align:center;transition:transform .25s,box-shadow .25s,opacity .4s}
+    .card.hidden-on-up {opacity:0; transform:translateY(30px)} /* used when hiding on scroll up */
+    .card.showing {opacity:1;transform:translateY(0)}
     .card:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(0,200,255,0.06)}
     .card img{width:72px;height:72px;object-fit:contain;margin-bottom:12px}
 
@@ -37,10 +39,17 @@
     .cursor{width:10px;height:18px;background:#00e0ff;display:inline-block;animation:blink 0.8s steps(1) infinite}
     @keyframes blink{50%{opacity:0}}
 
+    /* button */
+    .btn {
+      display:inline-block;padding:8px 14px;border-radius:10px;border:none;background:#00e0ff;color:#00110a;font-weight:700;text-decoration:none;margin-top:12px;
+      box-shadow:0 6px 18px rgba(0,224,255,0.12);
+    }
+    .btn:hover{filter:brightness(.95)}
+
     footer{text-align:center;color:#00e0ff;padding:30px 10px;border-top:1px solid rgba(0,255,200,0.04);margin-top:40px}
 
     /* responsive */
-    @media (max-width:700px){header{padding:12px 16px}.logo{height:52px} main{margin-top:90px;padding:12px}}
+    @media (max-width:720px){header{padding:12px 16px}.logo{height:52px} main{margin-top:90px;padding:12px}}
   </style>
 </head>
 <body>
@@ -60,26 +69,25 @@
   <main>
     <section id="about">
       <h2>О нас</h2>
-      <p>Мы — команда программистов-хакеров <strong>1xCode</strong>. Создаём надёжные боты, мобильные и десктопные приложения, а также интерфейсы для сайтов и сервисов.</p>
+      <p>Мы — команда программистов-хакеров <strong>1xCode</strong>. Создаём боты, мобильные и десктопные приложения, сайты и интерфейсы.</p>
     </section>
 
-    <!-- "Что мы можем" -->
     <section id="abilities">
       <h2>Что мы можем</h2>
       <div class="grid">
-        <div class="card">
+        <div class="card" data-card>
           <img src="images/telegram.png" alt="Telegram">
           <h3>Telegram-боты</h3>
           <p>Автоматизация, чат-боты и интеграции с сервисами.</p>
         </div>
 
-        <div class="card">
+        <div class="card" data-card>
           <img src="images/android.png" alt="Android">
           <h3>Мобильные приложения</h3>
           <p>Android-приложения с современным UI и стабильной логикой.</p>
         </div>
 
-        <div class="card">
+        <div class="card" data-card>
           <img src="images/windows.png" alt="Windows">
           <h3>EXE-приложения</h3>
           <p>Десктопные решения под Windows (установщики, утилиты, софт).</p>
@@ -87,22 +95,24 @@
       </div>
     </section>
 
-    <!-- Наши проекты -->
     <section id="projects">
       <h2>Наши проекты</h2>
       <div class="grid">
         <!-- Robux -->
-        <div class="card">
+        <div class="card" data-card>
           <img src="images/robux.png" alt="Robux">
           <h3>Сайт по покупке Robux</h3>
           <div class="typing-wrap">
             <span class="typing-text" id="typing-robux"></span>
             <span class="cursor" id="cursor-robux"></span>
           </div>
+          <div>
+            <a class="btn" href="https://1xcode-pixel.github.io/Rb_buy/" target="_blank" rel="noopener noreferrer">Перейти</a>
+          </div>
         </div>
 
-        <!-- Вирус для ютубера -->
-        <div class="card">
+        <!-- Virus -->
+        <div class="card" data-card>
           <img src="images/virus.png" alt="Вирус для ютубера">
           <h3>Вирус для ютубера</h3>
           <div class="typing-wrap">
@@ -116,17 +126,17 @@
     <section id="team">
       <h2>Команда</h2>
       <div class="grid team">
-        <div class="card">
+        <div class="card" data-card>
           <img src="images/dill.jpg" alt="Dill">
           <h3>Dill</h3>
           <p>Главный-кодер</p>
         </div>
-        <div class="card">
+        <div class="card" data-card>
           <img src="images/hleb.jpg" alt="Хлебушек">
           <h3>Хлебушек</h3>
           <p>Главный-дизайнер</p>
         </div>
-        <div class="card">
+        <div class="card" data-card>
           <img src="images/amnyam.jpg" alt="Ам-НЯМ">
           <h3>Ам-НЯМ</h3>
           <p>Менеджер</p>
@@ -164,7 +174,7 @@
     window.addEventListener('resize', resizeCanvas);
 
     function drawMatrix(){
-      ctx.fillStyle = 'rgba(0,0,0,0.12)'; // лёгкий след
+      ctx.fillStyle = 'rgba(0,0,0,0.12)';
       ctx.fillRect(0,0,canvas.width,canvas.height);
       ctx.fillStyle = '#00e0ff';
       ctx.font = fontSize + 'px monospace';
@@ -177,16 +187,7 @@
     }
     setInterval(drawMatrix, 40);
 
-    // ---------- reveal on scroll ----------
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting) entry.target.classList.add('visible');
-        else entry.target.classList.remove('visible');
-      });
-    }, {threshold: 0.15});
-    document.querySelectorAll('section, .card').forEach(el => observer.observe(el));
-
-    // ---------- smooth controlled scroll ----------
+    // ---------- helper: smooth scroll ----------
     function smoothScrollTo(start, end, duration){
       const change = end - start;
       const startTime = performance.now();
@@ -205,12 +206,72 @@
         const sel = a.getAttribute('href');
         const target = document.querySelector(sel);
         if(!target) return;
-        const top = target.getBoundingClientRect().top + window.scrollY - 72; // header offset
+        const top = target.getBoundingClientRect().top + window.scrollY - 72;
         smoothScrollTo(window.scrollY, top, 700);
       });
     });
 
-    // ---------- TYPING EFFECT GENERATOR ----------
+    // ---------- Reveal observer (sets inViewport flags) ----------
+    const allCards = Array.from(document.querySelectorAll('[data-card]'));
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        const el = entry.target;
+        el._inViewport = entry.isIntersecting; // custom flag used by scroll logic
+        // For sections (not cards) keep default reveal behavior:
+        if(el.tagName === 'SECTION') {
+          if(entry.isIntersecting) el.classList.add('visible');
+          else el.classList.remove('visible');
+        }
+      });
+    }, {threshold: 0.25});
+    // observe sections and cards
+    document.querySelectorAll('section').forEach(s=>observer.observe(s));
+    allCards.forEach(c=>observer.observe(c));
+
+    // ---------- initial show for cards that are in viewport on load ----------
+    window.addEventListener('load', ()=> {
+      allCards.forEach(c=>{
+        // if element is initially in viewport make it visible (so page isn't blank)
+        const rect = c.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+        if(inView) c.classList.add('showing');
+        else c.classList.remove('showing');
+      });
+    });
+
+    // ---------- scroll direction logic (show on down, hide on up) ----------
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+    window.addEventListener('scroll', ()=>{
+      const current = window.scrollY;
+      const direction = (current > lastScrollY) ? 'down' : 'up';
+      lastScrollY = current;
+      if(!ticking){
+        window.requestAnimationFrame(()=> {
+          handleDirection(direction);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, {passive:true});
+
+    function handleDirection(direction){
+      allCards.forEach(card=>{
+        // only affect cards currently intersecting with viewport according to observer flag
+        if(card._inViewport){
+          if(direction === 'down'){
+            card.classList.add('showing');
+            card.classList.remove('hidden-on-up');
+          } else {
+            // scroll up -> hide
+            card.classList.remove('showing');
+            card.classList.add('hidden-on-up');
+          }
+        }
+      });
+    }
+
+    // ---------- typing effect generator ----------
     function createTypeEffect(textEl, phrases, options = {}){
       const {
         typingMin = 60,
@@ -251,28 +312,26 @@
         }
       }
       tick();
-      return {
-        stop: ()=>{/* could implement stop logic if needed */}
-      };
+      return { stop: ()=>{} };
     }
 
-    // Robux phrases
-    const robuxPhrases = ["Online✅️"];
-    createTypeEffect(document.getElementById('typing-robux'), robuxPhrases, {
-      typingMin: 70, typingMax: 140, deletingMin: 70, deletingMax: 120, pauseAfterType: 1200, pauseAfterDelete: 400
+    // Robux typing
+    createTypeEffect(document.getElementById('typing-robux'), ["Кодится...", "Украшаем...", "Тестим...", "Запускаем..."], {
+      typingMin:70, typingMax:140, deletingMin:70, deletingMax:120, pauseAfterType:1200, pauseAfterDelete:400
     });
 
-    // Virus phrases (as requested — kept spelling as provided)
-    const virusPhrases = ["Кодится...", "Украшаем...", "Тестим...", "Запускаем..."];
-    createTypeEffect(document.getElementById('typing-virus'), virusPhrases, {
-      typingMin: 80, typingMax: 160, deletingMin: 80, deletingMax: 140, pauseAfterType: 1400, pauseAfterDelete: 500
+    // Virus typing
+    createTypeEffect(document.getElementById('typing-virus'), ["Расматривается...", "Ожидание...", "Отказана на время..."], {
+      typingMin:80, typingMax:160, deletingMin:80, deletingMax:140, pauseAfterType:1400, pauseAfterDelete:500
     });
 
-    // ---------- year ----------
+    // year
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
+
+
 
 
 
