@@ -1,159 +1,165 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>1xCode — Команда программистов</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix + Typing Effect</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Consolas, monospace;background:#000;color:#0ff;overflow-x:hidden}
-    /* canvas - матрица */
-    #matrixCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block}
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
 
-    /* header */
-    header{position:fixed;left:0;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 32px;background:#000;z-index:10;border-bottom:1px solid rgba(0,255,200,0.08)}
-    .logo{height:64px}
-    nav a{color:#00e0ff;text-decoration:none;margin-left:18px;font-weight:600;transition:color .18s}
-    nav a:hover{color:#fff}
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
 
-    main{max-width:1100px;margin:110px auto;padding:20px}
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.8);
+      padding: 10px 20px;
+      display: flex;
+      gap: 15px;
+      z-index: 10;
+    }
 
-    section{margin:28px 0;padding:26px;border-radius:12px;background:transparent;transition:opacity .7s,transform .7s;opacity:0;transform:translateY(30px);border-left:3px solid rgba(0,200,255,0.06)}
-    section.visible{opacity:1;transform:translateY(0)}
-    h2{color:#00e0ff;margin-bottom:12px}
+    nav a {
+      color: #00e0ff;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-    /* grid */
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    section {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
 
-    .card{background:rgba(0,0,0,0.6);padding:18px;border-radius:10px;border:1px solid rgba(0,255,255,0.06);text-align:center;transition:transform .25s,box-shadow .25s}
-    .card:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(0,200,255,0.06)}
-    .card img{width:72px;height:72px;object-fit:contain;margin-bottom:12px}
+    section.visible {
+      opacity: 1;
+    }
 
-    /* team avatars */
-    .team .card img{width:100px;height:100px;border-radius:50%;border:2px solid #0ff;box-shadow:0 0 12px rgba(0,255,255,0.06)}
+    .grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      padding: 40px;
+    }
 
-    /* typing */
-    .typing-wrap{display:inline-flex;align-items:center;gap:8px}
-    #typing{font-weight:700;color:#00e0ff;white-space:pre}
-    #cursor{width:10px;height:18px;background:#00e0ff;display:inline-block;animation:blink 0.8s steps(1) infinite}
-    @keyframes blink{50%{opacity:0}}
+    .card {
+      background: #111;
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 280px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
 
-    footer{text-align:center;color:#00e0ff;padding:30px 10px;border-top:1px solid rgba(0,255,200,0.04);margin-top:40px}
+    .card img {
+      max-width: 100%;
+      border-radius: 12px;
+    }
 
-    /* responsive */
-    @media (max-width:700px){header{padding:12px 16px}.logo{height:52px} main{margin-top:90px;padding:12px}}
+    .typing-wrap {
+      font-family: monospace;
+      font-size: 18px;
+      margin-top: 10px;
+      color: #00e0ff;
+    }
+
+    .cursor {
+      display: inline-block;
+      animation: blink 0.7s steps(2, start) infinite;
+    }
+
+    @keyframes blink {
+      to { visibility: hidden; }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #888;
+    }
   </style>
 </head>
 <body>
-  <canvas id="matrixCanvas"></canvas>
+  <canvas id="canvas"></canvas>
 
-  <header>
-    <img src="images/logo.png" alt="1xCode logo" class="logo">
-    <nav>
-      <a href="#about">О нас</a>
-      <a href="#abilities">Что мы можем</a>
-      <a href="#projects">Наши проекты</a>
-      <a href="#team">Команда</a>
-      <a href="#contact">Контакты</a>
-    </nav>
-  </header>
+  <nav>
+    <a href="#section1">Главная</a>
+    <a href="#section2">Проекты</a>
+    <a href="#section3">Контакты</a>
+  </nav>
 
-  <main>
-    <section id="about">
-      <h2>О нас</h2>
-      <p>Мы — команда программистов-хакеров <strong>1xCode</strong>. Создаём надёжные боты, мобильные и десктопные приложения, а также интерфейсы для сайтов и сервисов.</p>
-    </section>
+  <section id="section1">
+    <h1>Добро пожаловать</h1>
+  </section>
 
-    <!-- ЧТО МЫ МОЖЕМ: сюда перемещены карточки -->
-    <section id="abilities">
-      <h2>Что мы можем</h2>
-      <div class="grid">
-        <div class="card">
-          <img src="images/telegram.png" alt="Telegram">
-          <h3>Telegram-боты</h3>
-          <p>Автоматизация, чат-боты и интеграции с сервисами.</p>
-        </div>
-
-        <div class="card">
-          <img src="images/android.png" alt="Android">
-          <h3>Мобильные приложения</h3>
-          <p>Android-приложения с современным UI и стабильной логикой.</p>
-        </div>
-
-        <div class="card">
-          <img src="images/windows.png" alt="Windows">
-          <h3>EXE-приложения</h3>
-          <p>Десктопные решения под Windows (установщики, утилиты, софт).</p>
+  <section id="section2">
+    <div class="grid">
+      <div class="card" data-phrases='["Кодим...", "Украшаем...", "Тестим...", "Запускаем..."]'>
+        <img src="images/Virus.png" alt="Virus">
+        <h3>Вирус для Ютубера</h3>
+        <div class="typing-wrap">
+          <span class="typing"></span><span class="cursor">|</span>
         </div>
       </div>
-    </section>
 
-    <!-- НАШИ ПРОЕКТЫ: оставляем Robux проект -->
-    <section id="projects">
-      <h2>Наши проекты</h2>
-      <div class="grid">
-        <div class="card">
-          <img src="images/robux.png" alt="Robux">
-          <h3>Сайт по покупке Robux</h3>
-          <div class="typing-wrap"><span id="typing"></span><span id="cursor"></span></div>
+      <div class="card" data-phrases='["Учимся...", "Пробуем...", "Ошибаемся...", "Исправляем..."]'>
+        <img src="images/Other.png" alt="Other">
+        <h3>Вторая карточка</h3>
+        <div class="typing-wrap">
+          <span class="typing"></span><span class="cursor">|</span>
         </div>
       </div>
-      <div class="grid">
-        <div class="card">
-          <img src="images/Virus.png" alt="Virus">
-          <h3>Вирус для Ютубера/h3>
-          <div class="typing-wrap"><span id="typing"></span><span id="cursor"></span></div>
-        </div>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="team">
-      <h2>Команда</h2>
-      <div class="grid team">
-        <div class="card">
-          <img src="images/dill.jpg" alt="Dill">
-          <h3>Dill</h3>
-          <p>Главный-кодер</p>
-        </div>
-        <div class="card">
-          <img src="images/hleb.jpg" alt="Хлебушек">
-          <h3>Хлебушек</h3>
-          <p>Главный-дизайнер</p>
-        </div>
-        <div class="card">
-          <img src="images/amnyam.jpg" alt="Ам-НЯМ">
-          <h3>Ам-НЯМ</h3>
-          <p>Менеджер</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <h2>Контакты</h2>
-      <p>Email: 1xcodeteam@gmail.com</p>
-      <p>Город: Магнитогорск</p>
-    </section>
-  </main>
+  <section id="section3">
+    <h2>Связаться с нами</h2>
+  </section>
 
   <footer>
-    © <span id="year"></span> 1xCode — сила в коде
+    <p>© <span id="year"></span> Все права защищены</p>
   </footer>
 
   <script>
-    // --- MATRIX (устойчивый при ресайзе) ---
-    const canvas = document.getElementById('matrixCanvas');
+    const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const letters = '01';
-    const fontSize = 16;
-    let columns = 0;
-    let drops = [];
 
-    function resize() {
+    let letters = '01';
+    letters = letters.split('');
+
+    let fontSize = 16;
+    let columns;
+    let drops;
+
+    function resize(){
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      columns = Math.floor(canvas.width / fontSize);
-      drops = new Array(columns).fill(1);
+      columns = canvas.width / fontSize;
+      drops = [];
+      for(let i=0;i<columns;i++) drops[i] = 1;
     }
+
     resize();
     window.addEventListener('resize', resize);
 
@@ -163,7 +169,7 @@
       ctx.fillStyle = '#00e0ff';
       ctx.font = fontSize + 'px monospace';
       for(let i=0;i<drops.length;i++){
-        const text = letters.charAt(Math.floor(Math.random()*letters.length));
+        const text = letters[Math.floor(Math.random()*letters.length)];
         ctx.fillText(text, i*fontSize, drops[i]*fontSize);
         if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
@@ -204,41 +210,47 @@
       });
     });
 
-    // --- typing effect (Robux) ---
-    const phrases = ["   Кодим...", "   Украшаем...", "   Тестим...", "   Запускаем..."];
-    const typingEl = document.getElementById('typing');
-    let pIndex = 0, cIndex = 0, deleting = false;
+    // --- typing effect (per card) ---
+    function startTyping(card){
+      const phrases = JSON.parse(card.dataset.phrases);
+      const typingEl = card.querySelector('.typing');
+      let pIndex = 0, cIndex = 0, deleting = false;
 
-    function typeLoop(){
-      const current = phrases[pIndex];
-      if(!deleting){
-        cIndex++;
-        typingEl.textContent = current.slice(0, cIndex);
-        if(cIndex === current.length){
-          deleting = true;
-          setTimeout(typeLoop, 1200);
-          return;
+      function typeLoop(){
+        const current = phrases[pIndex];
+        if(!deleting){
+          cIndex++;
+          typingEl.textContent = current.slice(0, cIndex);
+          if(cIndex === current.length){
+            deleting = true;
+            setTimeout(typeLoop, 1200);
+            return;
+          }
+          setTimeout(typeLoop, 100 + Math.random()*60);
+        } else {
+          cIndex--;
+          typingEl.textContent = current.slice(0, cIndex);
+          if(cIndex === 0){
+            deleting = false;
+            pIndex = (pIndex + 1) % phrases.length;
+            setTimeout(typeLoop, 400);
+            return;
+          }
+          setTimeout(typeLoop, 70 + Math.random()*50);
         }
-        setTimeout(typeLoop, 100 + Math.random()*60); // small randomness
-      } else {
-        cIndex--;
-        typingEl.textContent = current.slice(0, cIndex);
-        if(cIndex === 0){
-          deleting = false;
-          pIndex = (pIndex + 1) % phrases.length;
-          setTimeout(typeLoop, 400);
-          return;
-        }
-        setTimeout(typeLoop, 70 + Math.random()*50);
       }
+      typeLoop();
     }
-    typeLoop();
+
+    document.querySelectorAll('.card').forEach(startTyping);
 
     // year
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
+
+
 
 
 
