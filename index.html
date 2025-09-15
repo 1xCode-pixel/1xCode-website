@@ -170,7 +170,7 @@
         if(entry.isIntersecting) entry.target.classList.add('visible');
         else entry.target.classList.remove('visible');
       });
-    }, {threshold: 0.15});
+    }, {threshold: 0.60});
     document.querySelectorAll('section').forEach(s=>observer.observe(s));
     document.querySelectorAll('.card').forEach(c=>observer.observe(c));
 
@@ -198,7 +198,7 @@
     });
 
     // --- typing effect (Robux) ---
-    const phrases = ["   Кодится...", "   Украшаем...", "   Тестим...", "   Запускаем..."];
+    const phrases = ["   Кодим...", "   Украшаем...", "   Тестим...", "   Запускаем..."];
     const typingEl = document.getElementById('typing');
     let pIndex = 0, cIndex = 0, deleting = false;
 
@@ -232,6 +232,7 @@
   </script>
 </body>
 </html>
+
 
 
 
