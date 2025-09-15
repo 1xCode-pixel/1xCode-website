@@ -6,12 +6,12 @@
   <title>1xCode — Команда программистов</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Consolas, monospace;background:#000;color:#0ff;overflow-x:hidden}
+    body{font-family:Consolas, monospace, monospace;background:#000;color:#0ff;overflow-x:hidden}
     /* canvas - матрица */
     #matrixCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block}
 
     /* header */
-    header{position:fixed;left:0;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 32px;background:#000;z-index:10;border-bottom:1px solid rgba(0,255,200,0.08)}
+    header{position:fixed;left:0;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 32px;background:#000;z-index:10;border-bottom:1px solid rgba(0,255,200,0.06)}
     .logo{height:64px}
     nav a{color:#00e0ff;text-decoration:none;margin-left:18px;font-weight:600;transition:color .18s}
     nav a:hover{color:#fff}
@@ -22,7 +22,6 @@
     section.visible{opacity:1;transform:translateY(0)}
     h2{color:#00e0ff;margin-bottom:12px}
 
-    /* grid */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
 
     .card{background:rgba(0,0,0,0.6);padding:18px;border-radius:10px;border:1px solid rgba(0,255,255,0.06);text-align:center;transition:transform .25s,box-shadow .25s}
@@ -33,9 +32,9 @@
     .team .card img{width:100px;height:100px;border-radius:50%;border:2px solid #0ff;box-shadow:0 0 12px rgba(0,255,255,0.06)}
 
     /* typing */
-    .typing-wrap{display:inline-flex;align-items:center;gap:8px}
-    #typing{font-weight:700;color:#00e0ff;white-space:pre}
-    #cursor{width:10px;height:18px;background:#00e0ff;display:inline-block;animation:blink 0.8s steps(1) infinite}
+    .typing-wrap{display:inline-flex;align-items:center;gap:8px;margin-top:8px}
+    .typing-text{font-weight:700;color:#00e0ff;white-space:pre}
+    .cursor{width:10px;height:18px;background:#00e0ff;display:inline-block;animation:blink 0.8s steps(1) infinite}
     @keyframes blink{50%{opacity:0}}
 
     footer{text-align:center;color:#00e0ff;padding:30px 10px;border-top:1px solid rgba(0,255,200,0.04);margin-top:40px}
@@ -64,7 +63,7 @@
       <p>Мы — команда программистов-хакеров <strong>1xCode</strong>. Создаём надёжные боты, мобильные и десктопные приложения, а также интерфейсы для сайтов и сервисов.</p>
     </section>
 
-    <!-- ЧТО МЫ МОЖЕМ: сюда перемещены карточки -->
+    <!-- "Что мы можем" -->
     <section id="abilities">
       <h2>Что мы можем</h2>
       <div class="grid">
@@ -88,14 +87,28 @@
       </div>
     </section>
 
-    <!-- НАШИ ПРОЕКТЫ: оставляем Robux проект -->
+    <!-- Наши проекты -->
     <section id="projects">
       <h2>Наши проекты</h2>
       <div class="grid">
+        <!-- Robux -->
         <div class="card">
           <img src="images/robux.png" alt="Robux">
           <h3>Сайт по покупке Robux</h3>
-          <div class="typing-wrap"><span id="typing"></span><span id="cursor"></span></div>
+          <div class="typing-wrap">
+            <span class="typing-text" id="typing-robux"></span>
+            <span class="cursor" id="cursor-robux"></span>
+          </div>
+        </div>
+
+        <!-- Вирус для ютубера -->
+        <div class="card">
+          <img src="images/virus.png" alt="Вирус для ютубера">
+          <h3>Вирус для ютубера</h3>
+          <div class="typing-wrap">
+            <span class="typing-text" id="typing-virus"></span>
+            <span class="cursor" id="cursor-virus"></span>
+          </div>
         </div>
       </div>
     </section>
@@ -133,7 +146,7 @@
   </footer>
 
   <script>
-    // --- MATRIX (устойчивый при ресайзе) ---
+    // ---------- MATRIX ----------
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     const letters = '01';
@@ -141,17 +154,17 @@
     let columns = 0;
     let drops = [];
 
-    function resize() {
+    function resizeCanvas(){
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       columns = Math.floor(canvas.width / fontSize);
       drops = new Array(columns).fill(1);
     }
-    resize();
-    window.addEventListener('resize', resize);
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
     function drawMatrix(){
-      ctx.fillStyle = 'rgba(0,0,0,0.12)';
+      ctx.fillStyle = 'rgba(0,0,0,0.12)'; // лёгкий след
       ctx.fillRect(0,0,canvas.width,canvas.height);
       ctx.fillStyle = '#00e0ff';
       ctx.font = fontSize + 'px monospace';
@@ -164,71 +177,101 @@
     }
     setInterval(drawMatrix, 40);
 
-    // --- reveal on scroll ---
+    // ---------- reveal on scroll ----------
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(entry=>{
         if(entry.isIntersecting) entry.target.classList.add('visible');
         else entry.target.classList.remove('visible');
       });
     }, {threshold: 0.15});
-    document.querySelectorAll('section').forEach(s=>observer.observe(s));
-    document.querySelectorAll('.card').forEach(c=>observer.observe(c));
+    document.querySelectorAll('section, .card').forEach(el => observer.observe(el));
 
-    // --- smooth scroll with controllable speed ---
+    // ---------- smooth controlled scroll ----------
     function smoothScrollTo(start, end, duration){
       const change = end - start;
       const startTime = performance.now();
       function animate(now){
         const elapsed = now - startTime;
         const t = Math.min(elapsed / duration, 1);
-        const ease = t<.5 ? 2*t*t : -1 + (4-2*t)*t; // easeInOutQuad-ish
+        const ease = t < 0.5 ? 2*t*t : -1 + (4-2*t)*t; // easeInOut-ish
         window.scrollTo(0, start + change * ease);
-        if(t<1) requestAnimationFrame(animate);
+        if(t < 1) requestAnimationFrame(animate);
       }
       requestAnimationFrame(animate);
     }
     document.querySelectorAll('nav a').forEach(a=>{
       a.addEventListener('click', (e)=>{
         e.preventDefault();
-        const target = document.querySelector(a.getAttribute('href'));
+        const sel = a.getAttribute('href');
+        const target = document.querySelector(sel);
         if(!target) return;
         const top = target.getBoundingClientRect().top + window.scrollY - 72; // header offset
         smoothScrollTo(window.scrollY, top, 700);
       });
     });
 
-    // --- typing effect (Robux) ---
-    const phrases = ["Кодится...", "Украшаем...", "Тестим...", "Запускаем..."];
-    const typingEl = document.getElementById('typing');
-    let pIndex = 0, cIndex = 0, deleting = false;
+    // ---------- TYPING EFFECT GENERATOR ----------
+    function createTypeEffect(textEl, phrases, options = {}){
+      const {
+        typingMin = 60,
+        typingMax = 140,
+        deletingMin = 50,
+        deletingMax = 120,
+        pauseAfterType = 1200,
+        pauseAfterDelete = 400
+      } = options;
 
-    function typeLoop(){
-      const current = phrases[pIndex];
-      if(!deleting){
-        cIndex++;
-        typingEl.textContent = current.slice(0, cIndex);
-        if(cIndex === current.length){
-          deleting = true;
-          setTimeout(typeLoop, 1200);
-          return;
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let deleting = false;
+
+      function rand(min,max){ return Math.floor(min + Math.random()*(max-min)); }
+
+      function tick(){
+        const current = phrases[phraseIndex];
+        if(!deleting){
+          charIndex++;
+          textEl.textContent = current.slice(0,charIndex);
+          if(charIndex === current.length){
+            deleting = true;
+            setTimeout(tick, pauseAfterType);
+            return;
+          }
+          setTimeout(tick, rand(typingMin, typingMax));
+        } else {
+          charIndex--;
+          textEl.textContent = current.slice(0,charIndex);
+          if(charIndex === 0){
+            deleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            setTimeout(tick, pauseAfterDelete);
+            return;
+          }
+          setTimeout(tick, rand(deletingMin, deletingMax));
         }
-        setTimeout(typeLoop, 100 + Math.random()*60); // small randomness
-      } else {
-        cIndex--;
-        typingEl.textContent = current.slice(0, cIndex);
-        if(cIndex === 0){
-          deleting = false;
-          pIndex = (pIndex + 1) % phrases.length;
-          setTimeout(typeLoop, 400);
-          return;
-        }
-        setTimeout(typeLoop, 70 + Math.random()*50);
       }
+      tick();
+      return {
+        stop: ()=>{/* could implement stop logic if needed */}
+      };
     }
-    typeLoop();
 
-    // year
+    // Robux phrases
+    const robuxPhrases = ["Кодится...", "Украшаем...", "Тестим...", "Запускаем..."];
+    createTypeEffect(document.getElementById('typing-robux'), robuxPhrases, {
+      typingMin: 70, typingMax: 140, deletingMin: 70, deletingMax: 120, pauseAfterType: 1200, pauseAfterDelete: 400
+    });
+
+    // Virus phrases (as requested — kept spelling as provided)
+    const virusPhrases = ["Расматривается...", "Ожидание...", "Отказана на время..."];
+    createTypeEffect(document.getElementById('typing-virus'), virusPhrases, {
+      typingMin: 80, typingMax: 160, deletingMin: 80, deletingMax: 140, pauseAfterType: 1400, pauseAfterDelete: 500
+    });
+
+    // ---------- year ----------
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
+
+
