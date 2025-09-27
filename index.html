@@ -1,283 +1,280 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>1xCode — Команда программистов</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Consolas, monospace, monospace;background:#000;color:#0ff;overflow-x:hidden}
-    /* canvas - матрица */
-    #matrixCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>White Ai — Команда разработчиков</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Consolas, monospace;background:#000;color:#eee;overflow-x:hidden}
 
-    /* header */
-    header{position:fixed;left:0;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 32px;background:#000;z-index:10;border-bottom:1px solid rgba(0,255,200,0.06)}
-    .logo{height:64px}
-    nav a{color:#00e0ff;text-decoration:none;margin-left:18px;font-weight:600;transition:color .18s}
-    nav a:hover{color:#fff}
+/* canvas - матрица */
+#matrixCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block}
 
-    main{max-width:1100px;margin:110px auto;padding:20px}
+/* header */
+header{position:fixed;left:0;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 32px;background:#000;z-index:10;border-bottom:1px solid rgba(255,255,255,0.05)}
+header nav a{color:#eee;text-decoration:none;margin-left:18px;font-weight:600;transition:color .18s}
+header nav a:hover{color:#fff}
 
-    section{margin:28px 0;padding:26px;border-radius:12px;background:transparent;transition:opacity .7s,transform .7s;opacity:0;transform:translateY(30px);border-left:3px solid rgba(0,200,255,0.06)}
-    section.visible{opacity:1;transform:translateY(0)}
-    h2{color:#00e0ff;margin-bottom:12px}
+/* логотип White Ai */
+.logo-text{
+  font-size:28px;
+  font-weight:700;
+  font-family:Consolas, monospace;
+  background: linear-gradient(90deg, #fff, #aaa, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: gradientShift 3s linear infinite;
+  transition: text-shadow 0.3s ease, transform 0.3s ease;
+}
+.logo-text:hover{
+  text-shadow: 0 0 12px #fff, 0 0 24px #fff, 0 0 36px #fff;
+  transform: scale(1.05);
+}
+@keyframes gradientShift {
+  0% {background-position:0%;}
+  50% {background-position:100%;}
+  100% {background-position:0%;}
+}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+/* вращающаяся картинка */
+.rotating-logo{
+  width:48px;
+  height:48px;
+  animation: rotateLogo var(--rotate-speed, 20s) linear infinite;
+  transition: transform 0.3s ease;
+}
+.rotating-logo:hover{
+  transform: scale(1.1) rotate(0deg);
+}
+@keyframes rotateLogo{
+  0%{transform: rotate(0deg);}
+  100%{transform: rotate(360deg);}
+}
 
-    .card{background:rgba(0,0,0,0.6);padding:18px;border-radius:10px;border:1px solid rgba(0,255,255,0.06);text-align:center;transition:transform .25s,box-shadow .25s}
-    .card:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(0,200,255,0.06)}
-    .card img{width:72px;height:72px;object-fit:contain;margin-bottom:12px}
+main{max-width:1100px;margin:110px auto;padding:20px}
+section{margin:28px 0;padding:26px;border-radius:12px;background:transparent;transition:opacity .7s,transform .7s;opacity:0;transform:translateY(30px);border-left:3px solid rgba(255,255,255,0.05)}
+section.visible{opacity:1;transform:translateY(0)}
+h2{color:#fff;margin-bottom:12px}
 
-    /* team avatars */
-    .team .card img{width:100px;height:100px;border-radius:50%;border:2px solid #0ff;box-shadow:0 0 12px rgba(0,255,255,0.06)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.card{background:rgba(255,255,255,0.05);padding:18px;border-radius:10px;border:1px solid rgba(255,255,255,0.05);text-align:center;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(255,255,255,0.05)}
+.card img{width:72px;height:72px;object-fit:contain;margin-bottom:12px}
 
-    /* typing */
-    .typing-wrap{display:inline-flex;align-items:center;gap:8px;margin-top:8px}
-    .typing-text{font-weight:700;color:#00e0ff;white-space:pre}
-    .cursor{width:10px;height:18px;background:#00e0ff;display:inline-block;animation:blink 0.8s steps(1) infinite}
-    @keyframes blink{50%{opacity:0}}
+/* team avatars */
+.team .card img{width:100px;height:100px;border-radius:50%;border:2px solid #eee;box-shadow:0 0 12px rgba(255,255,255,0.05)}
 
-    footer{text-align:center;color:#00e0ff;padding:30px 10px;border-top:1px solid rgba(0,255,200,0.04);margin-top:40px}
+/* typing */
+.typing-wrap{display:inline-flex;align-items:center;gap:8px;margin-top:8px}
+.typing-text{font-weight:700;color:#fff;white-space:pre}
+.cursor{width:10px;height:18px;background:#fff;display:inline-block;animation:blink 0.8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
 
-    /* responsive */
-    @media (max-width:700px){header{padding:12px 16px}.logo{height:52px} main{margin-top:90px;padding:12px}}
-  </style>
+footer{text-align:center;color:#eee;padding:30px 10px;border-top:1px solid rgba(255,255,255,0.03);margin-top:40px}
+
+@media (max-width:700px){
+  header{padding:12px 16px}
+  .logo-text{font-size:22px;}
+  main{margin-top:90px;padding:12px}
+}
+</style>
 </head>
+
 <body>
-  <canvas id="matrixCanvas"></canvas>
+<canvas id="matrixCanvas"></canvas>
 
-  <header>
-    <img src="images/logo.png" alt="1xCode logo" class="logo">
-    <nav>
-      <a href="#about">О нас</a>
-      <a href="#abilities">Что мы можем</a>
-      <a href="#projects">Наши проекты</a>
-      <a href="#team">Команда</a>
-      <a href="#contact">Контакты</a>
-    </nav>
-  </header>
+<header>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div class="logo-text">White Ai</div>
+    <img src="images/Log.png" alt="Logo" class="rotating-logo">
+  </div>
+  <nav>
+    <a href="#about">О нас</a>
+    <a href="#abilities">Что мы можем</a>
+    <a href="#projects">Наши проекты</a>
+    <a href="#team">Команда</a>
+    <a href="#contact">Контакты</a>
+  </nav>
+</header>
 
-  
-  <main>
-    <section id="about">
-      <h2>О нас</h2>
-      <p>Мы — команда программистов-хакеров <strong>1xCode</strong>. Создаём надёжные боты, мобильные и десктопные приложения, а также интерфейсы для сайтов и сервисов.</p>
-    </section>
+<main>
+<section id="about">
+  <h2>О нас</h2>
+  <p>Мы — команда разработчиков <strong>White Ai</strong>. Создаём надёжные боты, мобильные и десктопные приложения, а также интерфейсы для сайтов и сервисов.</p>
+</section>
 
-    
-    <!-- "Что мы можем" -->
-    <section id="abilities">
-      <h2>Что мы можем</h2>
-      <div class="grid">
-        <div class="card">
-          <img src="images/telegram.png" alt="Telegram">
-          <h3>Telegram-боты</h3>
-          <p>Автоматизация, чат-боты и интеграции с сервисами.</p>
-        </div>
+<section id="abilities">
+  <h2>Что мы можем</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="images/telegram.png" alt="Telegram">
+      <h3>Telegram-боты</h3>
+      <p>Автоматизация, чат-боты и интеграции с сервисами.</p>
+    </div>
+    <div class="card">
+      <img src="images/android.png" alt="Android">
+      <h3>Мобильные приложения</h3>
+      <p>Android-приложения с современным UI и стабильной логикой.</p>
+    </div>
+    <div class="card">
+      <img src="images/windows.png" alt="Windows">
+      <h3>EXE-приложения</h3>
+      <p>Десктопные решения под Windows (установщики, утилиты, софт).</p>
+    </div>
+  </div>
+</section>
 
-        <div class="card">
-          <img src="images/android.png" alt="Android">
-          <h3>Мобильные приложения</h3>
-          <p>Android-приложения с современным UI и стабильной логикой.</p>
-        </div>
-
-        <div class="card">
-          <img src="images/windows.png" alt="Windows">
-          <h3>EXE-приложения</h3>
-          <p>Десктопные решения под Windows (установщики, утилиты, софт).</p>
-        </div>
+<section id="projects">
+  <h2>Наши проекты</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="images/halotech.png" alt="HaloTech AI">
+      <h3>HaloTech AI</h3>
+      <div class="typing-wrap">
+        <span class="typing-text" id="typing-halotech"></span>
+        <span class="cursor" id="cursor-halotech"></span>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- Наши проекты -->
-    <section id="projects">
-      <h2>Наши проекты</h2>
-      <div class="grid">
-        <!-- Robux -->
-        <div class="card">
-          <img src="images/robux.png" alt="Robux">
-          <h3>Сайт по покупке Robux</h3>
-          <div class="typing-wrap">
-            <span class="typing-text" id="typing-robux"></span>
-            <span class="cursor" id="cursor-robux"></span>
-          </div>
-        </div>
-        
-        <!-- Вирус для ютубера -->
-        <div class="card">
-          <img src="images/virus.png" alt="Вирус для ютубера">
-          <h3>Вирус для ютубера</h3>
-          <div class="typing-wrap">
-            <span class="typing-text" id="typing-virus"></span>
-            <span class="cursor" id="cursor-virus"></span>
-          </div>
-        </div>
-      </div>
-    </section>
+<section id="team">
+  <h2>Команда</h2>
+  <div class="grid team">
+    <div class="card">
+      <img src="images/dill.jpg" alt="Dill">
+      <h3>Dill</h3>
+      <p>Главный-кодер</p>
+    </div>
+    <div class="card">
+      <img src="images/hleb.jpg" alt="Хлебушек">
+      <h3>Хлебушек</h3>
+      <p>Главный-дизайнер</p>
+    </div>
+    <div class="card">
+      <img src="images/amnyam.jpg" alt="Ам-НЯМ">
+      <h3>Ам-НЯМ</h3>
+      <p>Менеджер</p>
+    </div>
+  </div>
+</section>
 
-    <section id="team">
-      <h2>Команда</h2>
-      <div class="grid team">
-        <div class="card">
-          <img src="images/dill.jpg" alt="Dill">
-          <h3>Dill</h3>
-          <p>Главный-кодер</p>
-        </div>
-        <div class="card">
-          <img src="images/hleb.jpg" alt="Хлебушек">
-          <h3>Хлебушек</h3>
-          <p>Главный-дизайнер</p>
-        </div>
-        <div class="card">
-          <img src="images/amnyam.jpg" alt="Ам-НЯМ">
-          <h3>Ам-НЯМ</h3>
-          <p>Менеджер</p>
-        </div>
-      </div>
-    </section>
+<section id="contact">
+  <h2>Контакты</h2>
+  <p>Email: white.ai.team@gmail.com</p>
+  <p>Город: Москва</p>
+</section>
+</main>
 
-    <section id="contact">
-      <h2>Контакты</h2>
-      <p>Email: 1xcodeteam@gmail.com</p>
-      <p>Город: Магнитогорск</p>
-    </section>
-  </main>
+<footer>
+  © <span id="year"></span> White Ai — интеллект будущего
+</footer>
 
-  <footer>
-    © <span id="year"></span> 1xCode — сила в коде
-  </footer>
+<script>
+// ---------- MATRIX ----------
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+const letters = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン漢字';
+const fontSize = 18;
+let columns = 0;
+let drops = [];
 
-  <script>
-    // ---------- MATRIX ----------
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-    const letters = '01';
-    const fontSize = 16;
-    let columns = 0;
-    let drops = [];
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  columns = Math.floor(canvas.width / fontSize);
+  drops = new Array(columns).fill(1);
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
-    function resizeCanvas(){
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      columns = Math.floor(canvas.width / fontSize);
-      drops = new Array(columns).fill(1);
+function drawMatrix(){
+  ctx.fillStyle = 'rgba(0,0,0,0.15)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  for(let i=0;i<drops.length;i++){
+    const text = letters.charAt(Math.floor(Math.random()*letters.length));
+    const gradient = ctx.createLinearGradient(0,drops[i]*fontSize,0,(drops[i]+1)*fontSize);
+    gradient.addColorStop(0,'#fff');
+    gradient.addColorStop(1,'#000');
+    ctx.fillStyle = gradient;
+    ctx.font = fontSize + 'px monospace';
+    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix, 50);
+
+// ---------- reveal on scroll ----------
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) entry.target.classList.add('visible');
+    else entry.target.classList.remove('visible');
+  });
+}, {threshold: 0.15});
+document.querySelectorAll('section, .card').forEach(el => observer.observe(el));
+
+// ---------- smooth scroll ----------
+function smoothScrollTo(start, end, duration){
+  const change = end - start;
+  const startTime = performance.now();
+  function animate(now){
+    const elapsed = now - startTime;
+    const t = Math.min(elapsed / duration, 1);
+    const ease = t < 0.5 ? 2*t*t : -1 + (4-2*t)*t;
+    window.scrollTo(0, start + change * ease);
+    if(t < 1) requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+}
+document.querySelectorAll('nav a').forEach(a=>{
+  a.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const sel = a.getAttribute('href');
+    const target = document.querySelector(sel);
+    if(!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - 72;
+    smoothScrollTo(window.scrollY, top, 700);
+  });
+});
+
+// ---------- typing effect ----------
+function createTypeEffect(textEl, phrases, options = {}){
+  const {typingMin=60, typingMax=140, deletingMin=50, deletingMax=120, pauseAfterType=1200, pauseAfterDelete=400} = options;
+  let phraseIndex=0, charIndex=0, deleting=false;
+  function rand(min,max){ return Math.floor(min + Math.random()*(max-min)); }
+  function tick(){
+    const current = phrases[phraseIndex];
+    if(!deleting){
+      charIndex++;
+      textEl.textContent = current.slice(0,charIndex);
+      if(charIndex===current.length){ deleting=true; setTimeout(tick, pauseAfterType); return; }
+      setTimeout(tick, rand(typingMin, typingMax));
+    } else {
+      charIndex--;
+      textEl.textContent = current.slice(0,charIndex);
+      if(charIndex===0){ deleting=false; phraseIndex=(phraseIndex+1)%phrases.length; setTimeout(tick,pauseAfterDelete); return; }
+      setTimeout(tick, rand(deletingMin, deletingMax));
     }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+  }
+  tick();
+}
 
-    function drawMatrix(){
-      ctx.fillStyle = 'rgba(0,0,0,0.12)'; // лёгкий след
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-      ctx.fillStyle = '#00e0ff';
-      ctx.font = fontSize + 'px monospace';
-      for(let i=0;i<drops.length;i++){
-        const text = letters.charAt(Math.floor(Math.random()*letters.length));
-        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
-    setInterval(drawMatrix, 40);
+// HaloTech AI typing
+createTypeEffect(document.getElementById('typing-halotech'), ["Обучается...", "Анализирует данные...", "Создаёт решения AI..."]);
 
-    // ---------- reveal on scroll ----------
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting) entry.target.classList.add('visible');
-        else entry.target.classList.remove('visible');
-      });
-    }, {threshold: 0.15});
-    document.querySelectorAll('section, .card').forEach(el => observer.observe(el));
-
-    // ---------- smooth controlled scroll ----------
-    function smoothScrollTo(start, end, duration){
-      const change = end - start;
-      const startTime = performance.now();
-      function animate(now){
-        const elapsed = now - startTime;
-        const t = Math.min(elapsed / duration, 1);
-        const ease = t < 0.5 ? 2*t*t : -1 + (4-2*t)*t; // easeInOut-ish
-        window.scrollTo(0, start + change * ease);
-        if(t < 1) requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
-    }
-    document.querySelectorAll('nav a').forEach(a=>{
-      a.addEventListener('click', (e)=>{
-        e.preventDefault();
-        const sel = a.getAttribute('href');
-        const target = document.querySelector(sel);
-        if(!target) return;
-        const top = target.getBoundingClientRect().top + window.scrollY - 72; // header offset
-        smoothScrollTo(window.scrollY, top, 700);
-      });
-    });
-
-    // ---------- TYPING EFFECT GENERATOR ----------
-    function createTypeEffect(textEl, phrases, options = {}){
-      const {
-        typingMin = 60,
-        typingMax = 140,
-        deletingMin = 50,
-        deletingMax = 120,
-        pauseAfterType = 1200,
-        pauseAfterDelete = 400
-      } = options;
-
-      let phraseIndex = 0;
-      let charIndex = 0;
-      let deleting = false;
-
-      function rand(min,max){ return Math.floor(min + Math.random()*(max-min)); }
-
-      function tick(){
-        const current = phrases[phraseIndex];
-        if(!deleting){
-          charIndex++;
-          textEl.textContent = current.slice(0,charIndex);
-          if(charIndex === current.length){
-            deleting = true;
-            setTimeout(tick, pauseAfterType);
-            return;
-          }
-          setTimeout(tick, rand(typingMin, typingMax));
-        } else {
-          charIndex--;
-          textEl.textContent = current.slice(0,charIndex);
-          if(charIndex === 0){
-            deleting = false;
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            setTimeout(tick, pauseAfterDelete);
-            return;
-          }
-          setTimeout(tick, rand(deletingMin, deletingMax));
-        }
-      }
-      tick();
-      return {
-        stop: ()=>{/* could implement stop logic if needed */}
-      };
-    }
-
-    // Robux phrases
-    const robuxPhrases = ["Online✅️"];
-    createTypeEffect(document.getElementById('typing-robux'), robuxPhrases, {
-      typingMin: 70, typingMax: 140, deletingMin: 70, deletingMax: 120, pauseAfterType: 1200, pauseAfterDelete: 400
-    });
-
-    // Virus phrases (as requested — kept spelling as provided)
-    const virusPhrases = ["Кодится...", "Украшаем...", "Тестим...", "Запускаем..."];
-    createTypeEffect(document.getElementById('typing-virus'), virusPhrases, {
-      typingMin: 80, typingMax: 160, deletingMin: 80, deletingMax: 140, pauseAfterType: 1400, pauseAfterDelete: 500
-    });
-
-    // ---------- year ----------
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+// year
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
 
 
+
  
+
 
 
 
